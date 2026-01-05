@@ -1,13 +1,6 @@
-const BACKEND_URL = 'https://fex-backend.onrender.com';
-
 document.addEventListener('DOMContentLoaded', () => {
   loadVersionInfo();
   loadUpdateLogs();
-
-  // Toggle login/register form
-  document.getElementById('toggle-auth').addEventListener('click', () => {
-    document.getElementById('auth-section').classList.toggle('hidden');
-  });
 
   // Banner double-click to GitHub
   document.getElementById('banner-container').addEventListener('dblclick', () => {
@@ -133,50 +126,4 @@ function showReleases() {
 // Close modal
 function closeModal() {
   document.getElementById('download-modal').style.display = "none";
-}
-
-// Register
-async function registerUser() {
-  const username = document.getElementById('reg-username').value;
-  const password = document.getElementById('reg-password').value;
-
-  const res = await fetch(`${BACKEND_URL}/register`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-
-  const data = await res.json();
-  alert(data.message);
-}
-
-// Login
-async function loginUser(usernameInput, passwordInput) {
-  const username = usernameInput || document.getElementById('login-username').value;
-  const password = passwordInput || document.getElementById('login-password').value;
-
-  const res = await fetch(`${BACKEND_URL}/login`, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ username, password })
-  });
-
-  const data = await res.json();
-  if (data.success) {
-    alert(`Welcome ${data.username}, your time is ${data.time}`);
-    localStorage.setItem('username', username);
-    localStorage.setItem('password', password);
-    startTimeSync(username);
-  } else {
-    alert(data.message);
-  }
-}
-
-// Get online player count
-function getOnlinePlayers() {
-  fetch(`${BACKEND_URL}/online`)
-    .then(res => res.json())
-    .then(data => {
-      console.log("Online players:", data.online);
-    });
 }
